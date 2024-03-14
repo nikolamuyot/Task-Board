@@ -1,31 +1,31 @@
 $(document).ready(function () {
-  let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+  let tasks = JSON.parse(localStorage.getItem("tasks")) || [
+    {
+      id: 1,
+      title: "Task 1",
+      state: "not-started",
+      deadline: "2024-03-20",
+    },
+    { id: 2, title: "Task 2", state: "in-progress", deadline: "2024-03-22" },
+    { id: 3, title: "Task 3", state: "completed", deadline: "2024-03-18" },
+  ];
 
   function displayTasks() {
     $(".task-column").empty(); // Clear existing tasks to prevent duplication
 
     tasks.forEach((task) => {
       const taskHtml = `
-                <div class="task-card" data-deadline="${task.deadline}">
+                <div class="task-card" draggable="true" data-id="${task.id}" data-deadline="${task.deadline}">
                     <h5>${task.title}</h5>
                     <p>Deadline: ${task.deadline}</p>
                 </div>
             `;
 
-      switch (task.state) {
-        case "Not Yet Started":
-          $("#not-started").append(taskHtml);
-          break;
-        case "In Progress":
-          $("#in-progress").append(taskHtml);
-          break;
-        case "Completed":
-          $("#completed").append(taskHtml);
-          break;
-      }
+      $(`#${task.state}`).append(taskHtml);
     });
 
     updateTaskColors(); // Apply color coding based on deadlines
+    setupDragAndDrop(); // Setup drag and drop functionality
   }
 
   function updateTaskColors() {
@@ -46,13 +46,14 @@ $(document).ready(function () {
 
   function addTask(title, description, deadline) {
     const newTask = {
-      id: tasks.length + 1, // Simple ID assignment
+      id: tasks.length + 1,
       title: title,
-      state: "Not Yet Started", // Default state for new tasks
+      state: "not-started",
       deadline: deadline,
     };
 
     tasks.push(newTask);
+    localStorage.setItem("tasks", JSON.stringify(tasks)); // Save to localStorage
     displayTasks(); // Refresh the task board
 
     // Save tasks to localStorage
@@ -76,6 +77,39 @@ $(document).ready(function () {
       alert("Please fill in all required fields.");
     }
   });
+
+  function setupDragAndDrop() {
+    $(".task-card").on("dragstart", function (event) {
+      event.originalEvent.dataTransfer.setData(
+        "text/plain",
+        event.target.dataset.id
+      );
+    });
+
+    $(".task-column").on("dragover", function (event) {
+      event.preventDefault(); // Necessary to allow a drop
+    });
+
+    $(".task-column").on("drop", function (event) {
+      event.preventDefault();
+      const taskId = event.originalEvent.dataTransfer.getData("text/plain");
+      const newState = this.id;
+      const taskElement = document.querySelector(`[data-id='${taskId}']`);
+      if (taskElement && this !== taskElement.parentNode) {
+        this.appendChild(taskElement); // Append to new column
+        updateTaskState(taskId, newState);
+      }
+    });
+  }
+
+  function updateTaskState(taskId, newState) {
+    const task = tasks.find((task) => task.id.toString() === taskId);
+    if (task) {
+      task.state = newState;
+      localStorage.setItem("tasks", JSON.stringify(tasks)); // Update localStorage
+      displayTasks();
+    }
+  }
 
   displayTasks(); // Initial display of tasks
 });
