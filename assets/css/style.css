@@ -12,3 +12,21 @@
     padding: 10px;
     border-radius: 5px; 
 }
+
+.nearing-deadline {
+  background-color: yellow; 
+}
+
+.overdue {
+  background-color: red; 
+}
+
+.task-input-form {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.task-input-form input, .task-input-form select, .task-input-form button {
+  margin: 0 5px;
+}
