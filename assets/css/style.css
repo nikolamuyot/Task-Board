@@ -1,24 +1,24 @@
 .task-column {
-    border: 1px solid #edd9d9;
-    min-height: 300px;
-    margin-top; 20px;
-    padding: 10px;
+  border: 1px solid #edd9d9;
+  min-height: 300px;
+  margin-top: 20px; /* Corrected from margin-top; to margin-top: */
+  padding: 10px;
 }
 
 .task-card {
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 5px; 
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
 }
 
 .nearing-deadline {
-  background-color: yellow; 
+  background-color: yellow;
 }
 
 .overdue {
-  background-color: red; 
+  background-color: red;
 }
 
 .task-input-form {
@@ -27,6 +27,28 @@
   margin-bottom: 20px;
 }
 
-.task-input-form input, .task-input-form select, .task-input-form button {
+.task-input-form input,
+.task-input-form select,
+.task-input-form button {
   margin: 0 5px;
+}
+
+/* Additional styles for modal customization */
+.modal-header,
+.modal-body,
+.modal-footer {
+  padding: 20px;
+}
+
+.modal-title {
+  color: #333;
+}
+
+.modal-footer .btn {
+  margin: 0 10px;
+}
+
+#taskForm input,
+#taskForm textarea {
+  margin-bottom: 15px;
 }
