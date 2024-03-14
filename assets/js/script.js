@@ -1,25 +1,16 @@
 $(document).ready(function () {
-  let tasks = [
-    {
-      id: 1,
-      title: "Task 1",
-      state: "Not Yet Started",
-      deadline: "2024-03-20",
-    },
-    { id: 2, title: "Task 2", state: "In Progress", deadline: "2024-03-22" },
-    { id: 3, title: "Task 3", state: "Completed", deadline: "2024-03-18" },
-  ];
+  let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
   function displayTasks() {
     $(".task-column").empty(); // Clear existing tasks to prevent duplication
 
     tasks.forEach((task) => {
       const taskHtml = `
-        <div class="task-card" data-deadline="${task.deadline}">
-          <h5>${task.title}</h5>
-          <p>Deadline: ${task.deadline}</p>
-        </div>
-      `;
+                <div class="task-card" data-deadline="${task.deadline}">
+                    <h5>${task.title}</h5>
+                    <p>Deadline: ${task.deadline}</p>
+                </div>
+            `;
 
       switch (task.state) {
         case "Not Yet Started":
@@ -54,7 +45,6 @@ $(document).ready(function () {
   }
 
   function addTask(title, description, deadline) {
-    // Updated to include description
     const newTask = {
       id: tasks.length + 1, // Simple ID assignment
       title: title,
@@ -64,15 +54,18 @@ $(document).ready(function () {
 
     tasks.push(newTask);
     displayTasks(); // Refresh the task board
+
+    // Save tasks to localStorage
+    localStorage.setItem("tasks", JSON.stringify(tasks));
   }
 
-  // Updated to listen for the Save Task button in the modal
   $("#saveTaskBtn").click(function () {
     const title = $("#taskTitleModal").val();
-    const description = $("#taskDescriptionModal").val(); // Now capturing description
+    const description = $("#taskDescriptionModal").val(); // Description isn't used in display yet
     const deadline = $("#taskDeadlineModal").val();
 
-    if (title && description && deadline) {
+    if (title && deadline) {
+      // Check for title and deadline, description is optional
       addTask(title, description, deadline);
       // Clear modal inputs after adding
       $("#taskTitleModal").val("");
@@ -80,7 +73,7 @@ $(document).ready(function () {
       $("#taskDeadlineModal").val("");
       $("#taskCreationModal").modal("hide"); // Hide the modal
     } else {
-      alert("Please fill in all fields.");
+      alert("Please fill in all required fields.");
     }
   });
 
