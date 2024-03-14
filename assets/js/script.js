@@ -55,14 +55,18 @@ $(document).ready(function () {
     tasks.push(newTask);
     localStorage.setItem("tasks", JSON.stringify(tasks)); // Save to localStorage
     displayTasks(); // Refresh the task board
+
+    // Save tasks to localStorage
+    localStorage.setItem("tasks", JSON.stringify(tasks));
   }
 
   $("#saveTaskBtn").click(function () {
     const title = $("#taskTitleModal").val();
-    const description = $("#taskDescriptionModal").val(); // Capturing description
+    const description = $("#taskDescriptionModal").val(); // Description isn't used in display yet
     const deadline = $("#taskDeadlineModal").val();
 
     if (title && deadline) {
+      // Check for title and deadline, description is optional
       addTask(title, description, deadline);
       // Clear modal inputs after adding
       $("#taskTitleModal").val("");
@@ -70,7 +74,7 @@ $(document).ready(function () {
       $("#taskDeadlineModal").val("");
       $("#taskCreationModal").modal("hide"); // Hide the modal
     } else {
-      alert("Please fill in all fields.");
+      alert("Please fill in all required fields.");
     }
   });
 
