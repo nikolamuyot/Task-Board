@@ -17,6 +17,7 @@ $(document).ready(function () {
       const taskHtml = `
         <div class="task-card" data-deadline="${task.deadline}">
           <h5>${task.title}</h5>
+          <p>Deadline: ${task.deadline}</p>
         </div>
       `;
 
@@ -52,30 +53,32 @@ $(document).ready(function () {
     });
   }
 
-  // Function to handle adding a new task from the form inputs
-  function addTask(title, state, deadline) {
+  function addTask(title, description, deadline) {
+    // Updated to include description
     const newTask = {
-      id: tasks.length + 1, // Simple ID assignment; consider a more robust approach for real applications
-      title,
-      state,
-      deadline,
+      id: tasks.length + 1, // Simple ID assignment
+      title: title,
+      state: "Not Yet Started", // Default state for new tasks
+      deadline: deadline,
     };
 
     tasks.push(newTask);
-    displayTasks(); // Refresh the task board display
+    displayTasks(); // Refresh the task board
   }
 
-  // Event listener for the Add Task button
-  $("#addTaskBtn").click(function () {
-    const title = $("#taskTitle").val();
-    const state = $("#taskState").val();
-    const deadline = $("#taskDeadline").val();
+  // Updated to listen for the Save Task button in the modal
+  $("#saveTaskBtn").click(function () {
+    const title = $("#taskTitleModal").val();
+    const description = $("#taskDescriptionModal").val(); // Now capturing description
+    const deadline = $("#taskDeadlineModal").val();
 
-    if (title && state && deadline) {
-      addTask(title, state, deadline);
-      $("#taskTitle").val(""); // Clear the input fields after adding
-      $("#taskState").val("Not Yet Started");
-      $("#taskDeadline").val("");
+    if (title && description && deadline) {
+      addTask(title, description, deadline);
+      // Clear modal inputs after adding
+      $("#taskTitleModal").val("");
+      $("#taskDescriptionModal").val("");
+      $("#taskDeadlineModal").val("");
+      $("#taskCreationModal").modal("hide"); // Hide the modal
     } else {
       alert("Please fill in all fields.");
     }

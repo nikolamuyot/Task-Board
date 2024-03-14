@@ -14,14 +14,13 @@
   </head>
   <body>
     <div class="task-input-form mb-3">
-      <input type="text" id="taskTitle" placeholder="Task Title" required />
-      <select id="taskState">
-        <option value="Not Yet Started">Not Yet Started</option>
-        <option value="In Progress">In Progress</option>
-        <option value="Completed">Completed</option>
-      </select>
-      <input type="date" id="taskDeadline" required />
-      <button id="addTaskBtn">Add Task</button>
+      <button
+        id="openModalBtn"
+        data-toggle="modal"
+        data-target="#taskCreationModal"
+      >
+        Define New Task
+      </button>
     </div>
 
     <div class="container">
@@ -43,6 +42,75 @@
           <h2>Completed</h2>
           <div id="completed" class="task-column">
             <!-- Tasks will be added here dynamically -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Task Creation Modal -->
+    <div
+      class="modal fade"
+      id="taskCreationModal"
+      tabindex="-1"
+      aria-labelledby="taskCreationModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="taskCreationModalLabel">New Task</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="taskForm">
+              <div class="form-group">
+                <label for="taskTitleModal">Title</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="taskTitleModal"
+                  placeholder="Task Title"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="taskDescriptionModal">Description</label>
+                <textarea
+                  class="form-control"
+                  id="taskDescriptionModal"
+                  rows="3"
+                  required
+                ></textarea>
+              </div>
+              <div class="form-group">
+                <label for="taskDeadlineModal">Deadline</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="taskDeadlineModal"
+                  required
+                />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary" id="saveTaskBtn">
+              Save Task
+            </button>
           </div>
         </div>
       </div>
